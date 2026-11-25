@@ -1,25 +1,25 @@
-"""Write one office-life joke to /output/entry.txt.
+"""Office-life joke entry for the Make the AI Judge Laugh bounty.
 
-The joke is a single line about office life. The program writes it
-exactly, with no trailing newline, so the file holds only the joke.
-
-Why this line: the setup is a true office observation (HR closes
-complaints like support tickets), the person in it is the one harmed,
-and the last words carry the dark turn (the spreadsheet, not the
-human, decides he is fine). One sentence, 103 characters.
+The program composes a single one-line joke about office life and
+writes it, with no trailing newline, to /output/entry.txt.
 """
 
-import os
-
-JOKE = "HR closed my burnout complaint as resolved. I still can't sleep, but the spreadsheet says I'm fine now."
-
-OUTPUT_PATH = "/output/entry.txt"
+from pathlib import Path
 
 
-def main():
-    os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as handle:
-        handle.write(JOKE)
+def compose_joke() -> str:
+    setup = "I missed my daughter's birthday for a meeting about meetings,"
+    punch = "and the only action item was another meeting."
+    return f"{setup} {punch}"
+
+
+def main() -> None:
+    joke = compose_joke()
+    assert 1 <= len(joke) <= 200, "joke must be 1-200 characters"
+    assert "\n" not in joke, "joke must be a single line"
+    out_dir = Path("/output")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "entry.txt").write_text(joke, encoding="utf-8", newline="")
 
 
 if __name__ == "__main__":
