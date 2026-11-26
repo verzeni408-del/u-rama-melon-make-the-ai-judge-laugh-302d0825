@@ -1,30 +1,30 @@
-"""Office-life joke entry for the Make the AI Judge Laugh bounty.
+"""Write one office-life joke to /output/entry.txt.
 
-The program composes a single one-line joke about office life and
-writes it, with no trailing newline, to /output/entry.txt.
+The joke is a single line about the office printer: the machine that
+jammed on every report for three years finally works flawlessly on the
+one document the narrator wanted nobody to see, right in front of the
+one person who least should see it: the boss.
 """
 
-from pathlib import Path
-
-# The joke text lives in module constants so compose() stays trivial
-# and any future edit touches exactly one place.
-JOKE_SETUP = "I missed my daughter's birthday for a meeting about meetings,"
-JOKE_PUNCH = "and the only action item was another meeting."
+import os
 
 
-def compose_joke() -> str:
-    return f"{JOKE_SETUP} {JOKE_PUNCH}"
+def build_joke() -> str:
+    setup = "The office printer jammed on every report for three years,"
+    twist = "then printed my resignation perfectly on the first try,"
+    sting = "in front of my boss."
+    return " ".join([setup, twist, sting])
 
 
 def main() -> None:
-    joke = compose_joke()
+    joke = build_joke()
     assert 1 <= len(joke) <= 200, "joke must be 1-200 characters"
     assert "\n" not in joke, "joke must be a single line"
-    assert "  " not in joke, "joke must not contain double spaces"
-    assert joke.endswith("."), "joke must end with a period"
-    out_dir = Path("/output")
-    out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "entry.txt").write_text(joke, encoding="utf-8", newline="")
+    assert joke.endswith("."), "joke must end with a full stop"
+    assert joke.strip() == joke, "joke must not have surrounding whitespace"
+    os.makedirs("/output", exist_ok=True)
+    with open("/output/entry.txt", "w", encoding="utf-8") as handle:
+        handle.write(joke)
 
 
 if __name__ == "__main__":
